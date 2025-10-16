@@ -7,6 +7,7 @@ import {
 } from "@radix-ui/react-icons";
 import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 
 function SigninForm() {
   const {
@@ -24,7 +25,13 @@ function SigninForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
+    const res = await signIn("credentials", {
+      redirect: false,
+      email: data.email,
+      password: data.password,
+    });
+
+    console.log(res);
   });
 
   console.log(errors);
