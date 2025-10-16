@@ -5,18 +5,18 @@ import NavLink from "next/link";
 function LoginPage() {
   return (
     <Container size="1" height="100%" className="p-3 md:p-0">
-      <Flex className="h-[calc(100vh-10rem)] w-full items-center">
+      <Flex className="h-screen w-full items-center">
         <Card className="w-full p-7">
-          <Heading>Sign In</Heading>
+          <Heading mb="4">Iniciar sesión</Heading>
 
           <SigninForm />
 
           <Flex justify="between" my="4">
-            <Text>Don&apos;t have an Account?</Text>
+            <Text>¿No tienes una cuenta?</Text>
 
             <Link asChild>
               <NavLink href="/auth/register" passHref>
-                Sign Up
+                Registrarse
               </NavLink>
             </Link>
           </Flex>
