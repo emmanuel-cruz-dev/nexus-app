@@ -1,23 +1,47 @@
-import { Container, Card, Heading, Flex, Text, Link } from "@radix-ui/themes";
+"use client";
+
+import {
+  Box,
+  Card,
+  Heading,
+  Flex,
+  Text,
+  Link,
+  Container,
+} from "@radix-ui/themes";
+import NextLink from "next/link";
 import SigninForm from "@/components/auth/SigninForm";
-import NavLink from "next/link";
 
 function LoginPage() {
   return (
-    <Container size="1" height="100%" className="p-3 md:p-0">
-      <Flex className="h-screen w-full items-center">
-        <Card className="w-full p-7">
-          <Heading mb="4">Iniciar sesión</Heading>
+    <Container size="1" height="100vh">
+      <Flex
+        direction="column"
+        align="center"
+        justify="center"
+        height="100%"
+        p="4"
+      >
+        <Card
+          size="3"
+          style={{ width: "100%", maxWidth: "420px" }}
+          variant="surface"
+        >
+          <Box mb="4">
+            <Heading size="6" mb="2">
+              Iniciar sesión
+            </Heading>
+            <Text size="2" color="gray">
+              Inicia sesión para acceder a tus datos.
+            </Text>
+          </Box>
 
           <SigninForm />
 
-          <Flex justify="between" my="4">
-            <Text>¿No tienes una cuenta?</Text>
-
+          <Flex justify="between" mt="4" align="center">
+            <Text size="2">¿No tienes una cuenta?</Text>
             <Link asChild>
-              <NavLink href="/auth/register" passHref>
-                Registrarse
-              </NavLink>
+              <NextLink href="/auth/register">Registrarse</NextLink>
             </Link>
           </Flex>
         </Card>
@@ -25,4 +49,5 @@ function LoginPage() {
     </Container>
   );
 }
+
 export default LoginPage;
