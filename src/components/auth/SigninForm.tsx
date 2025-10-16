@@ -1,19 +1,27 @@
 "use client";
-import { Flex, TextField, Button, Text } from "@radix-ui/themes";
-import { EnvelopeClosedIcon, LockClosedIcon } from "@radix-ui/react-icons";
+import { Flex, TextField, Button, Text, IconButton } from "@radix-ui/themes";
+import {
+  EnvelopeClosedIcon,
+  EyeOpenIcon,
+  EyeNoneIcon,
+} from "@radix-ui/react-icons";
 import { useForm, Controller } from "react-hook-form";
+import { useState } from "react";
 
 function SigninForm() {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
+    mode: "onChange",
     values: {
       email: "",
       password: "",
     },
   });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = handleSubmit(async (data) => {
     console.log(data);
@@ -72,9 +80,23 @@ function SigninForm() {
             },
           }}
           render={({ field }) => (
-            <TextField.Root type="password" placeholder="*******" {...field}>
-              <TextField.Slot>
-                <LockClosedIcon height="16" width="16" />
+            <TextField.Root
+              type={showPassword ? "text" : "password"}
+              placeholder="*******"
+              {...field}
+            >
+              <TextField.Slot side="left">
+                <IconButton
+                  type="button"
+                  variant="ghost"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOpenIcon height={16} width={16} />
+                  ) : (
+                    <EyeNoneIcon height={16} width={16} />
+                  )}
+                </IconButton>
               </TextField.Slot>
             </TextField.Root>
           )}
@@ -85,7 +107,7 @@ function SigninForm() {
           </Text>
         )}
 
-        <Button type="submit" mt="4">
+        <Button type="submit" mt="4" disabled={!isValid}>
           Iniciar sesión
         </Button>
       </Flex>
