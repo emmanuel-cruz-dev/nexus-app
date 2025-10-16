@@ -1,19 +1,23 @@
 "use client";
-import { Flex, TextField, Button, Text } from "@radix-ui/themes";
+import { Flex, TextField, Button, Text, IconButton } from "@radix-ui/themes";
 import {
   EnvelopeOpenIcon,
-  LockOpen1Icon,
+  EyeOpenIcon,
+  EyeNoneIcon,
   PersonIcon,
 } from "@radix-ui/react-icons";
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import axios from "axios";
 
 function SignupForm() {
   const {
     control,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
     watch,
   } = useForm({
+    mode: "onChange",
     defaultValues: {
       name: "",
       email: "",
@@ -24,8 +28,19 @@ function SignupForm() {
 
   const passwordValue = watch("password");
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const onSubmit = handleSubmit(async (data) => {
+    const { confirmPassword, ...dataToSend } = data;
+
+    if (confirmPassword !== data.password) {
+      return;
+    }
+
+    console.log("Enviando", dataToSend);
+    const res = await axios.post("/api/auth/register", dataToSend);
+    console.log(res);
   });
 
   return (
@@ -121,9 +136,23 @@ function SignupForm() {
             },
           }}
           render={({ field }) => (
-            <TextField.Root type="password" placeholder="*******" {...field}>
-              <TextField.Slot>
-                <LockOpen1Icon height="16" width="16" />
+            <TextField.Root
+              type={showPassword ? "text" : "password"}
+              placeholder="*******"
+              {...field}
+            >
+              <TextField.Slot side="left">
+                <IconButton
+                  type="button"
+                  variant="ghost"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOpenIcon height={16} width={16} />
+                  ) : (
+                    <EyeNoneIcon height={16} width={16} />
+                  )}
+                </IconButton>
               </TextField.Slot>
             </TextField.Root>
           )}
@@ -147,9 +176,23 @@ function SignupForm() {
               value === passwordValue || "Las contraseñas no coinciden",
           }}
           render={({ field }) => (
-            <TextField.Root type="password" placeholder="*******" {...field}>
+            <TextField.Root
+              type={showConfirm ? "text" : "password"}
+              placeholder="*******"
+              {...field}
+            >
               <TextField.Slot>
-                <LockOpen1Icon height="16" width="16" />
+                <IconButton
+                  type="button"
+                  variant="ghost"
+                  onClick={() => setShowConfirm(!showConfirm)}
+                >
+                  {showConfirm ? (
+                    <EyeOpenIcon height={16} width={16} />
+                  ) : (
+                    <EyeNoneIcon height={16} width={16} />
+                  )}
+                </IconButton>
               </TextField.Slot>
             </TextField.Root>
           )}
@@ -160,7 +203,7 @@ function SignupForm() {
           </Text>
         )}
 
-        <Button type="submit" mt="4">
+        <Button type="submit" mt="4" disabled={!isValid}>
           Registrarse
         </Button>
       </Flex>
