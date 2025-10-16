@@ -2,8 +2,6 @@
 import { Flex, TextField, Button, Text } from "@radix-ui/themes";
 import { EnvelopeClosedIcon, LockClosedIcon } from "@radix-ui/react-icons";
 import { useForm, Controller } from "react-hook-form";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 function SigninForm() {
   const {
@@ -16,21 +14,9 @@ function SigninForm() {
       password: "",
     },
   });
-  const router = useRouter();
 
   const onSubmit = handleSubmit(async (data) => {
     console.log(data);
-    const res = await signIn("credentials", {
-      redirect: false,
-      email: data.email,
-      password: data.password,
-    });
-
-    if (!res?.ok) {
-      console.log(res);
-    }
-
-    router.push("/dashboard");
   });
 
   console.log(errors);
@@ -43,9 +29,13 @@ function SigninForm() {
           name="email"
           control={control}
           rules={{
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Email no válido",
+            },
             required: {
               value: true,
-              message: "Email is required",
+              message: "El email es obligatorio",
             },
           }}
           render={({ field }) => (
@@ -61,24 +51,23 @@ function SigninForm() {
             </TextField.Root>
           )}
         />
-
         {errors.email && (
-          <Text color="ruby" className="text-xs">
+          <Text color="red" className="text-xs">
             {errors.email.message}
           </Text>
         )}
 
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password">Contraseña</label>
         <Controller
           name="password"
           control={control}
           rules={{
             required: {
-              message: "Password is required",
+              message: "La contraseña es obligatoria",
               value: true,
             },
             minLength: {
-              message: "Password must be at least 6 characters",
+              message: "La contraseña debe tener al menos 6 caracteres",
               value: 6,
             },
           }}
@@ -90,15 +79,14 @@ function SigninForm() {
             </TextField.Root>
           )}
         />
-
         {errors.password && (
-          <Text color="ruby" className="text-xs">
+          <Text color="red" className="text-xs">
             {errors.password.message}
           </Text>
         )}
 
         <Button type="submit" mt="4">
-          Sign In
+          Iniciar sesión
         </Button>
       </Flex>
     </form>
