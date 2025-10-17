@@ -14,6 +14,8 @@ import {
 } from "@radix-ui/themes";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 function ProjectNewPage() {
   const { control, handleSubmit } = useForm({
@@ -22,10 +24,26 @@ function ProjectNewPage() {
       description: "",
     },
   });
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = handleSubmit(async (data) => {
-    const res = await axios.post("/api/projects", data);
-    console.log(res);
+    if (isLoading) return;
+    setIsLoading(true);
+    try {
+      const res = await axios.post("/api/projects", data);
+
+      if (res.status === 201) {
+        router.refresh();
+        router.push("/dashboard");
+      } else {
+        console.log(res);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   });
 
   return (
