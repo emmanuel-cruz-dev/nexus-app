@@ -8,6 +8,7 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 function SigninForm() {
   const {
@@ -23,6 +24,7 @@ function SigninForm() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
   const onSubmit = handleSubmit(async (data) => {
     const res = await signIn("credentials", {
@@ -31,7 +33,11 @@ function SigninForm() {
       password: data.password,
     });
 
-    console.log(res);
+    if (!res?.ok) {
+      console.log(res);
+    }
+
+    router.push("/dashboard");
   });
 
   console.log(errors);
