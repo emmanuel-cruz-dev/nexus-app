@@ -1,4 +1,5 @@
 "use client";
+
 import { Flex, TextField, Button, Text, IconButton } from "@radix-ui/themes";
 import {
   EnvelopeOpenIcon,
@@ -9,6 +10,8 @@ import {
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 function SignupForm() {
   const {
@@ -26,6 +29,8 @@ function SignupForm() {
     },
   });
 
+  const router = useRouter();
+
   const passwordValue = watch("password");
 
   const [showPassword, setShowPassword] = useState(false);
@@ -41,6 +46,21 @@ function SignupForm() {
     console.log("Enviando", dataToSend);
     const res = await axios.post("/api/auth/register", dataToSend);
     console.log(res);
+
+    if (res.status === 201) {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+      });
+
+      if (!result?.ok) {
+        console.log(result?.error);
+        return;
+      }
+
+      router.push("/dashboard");
+    }
   });
 
   return (
