@@ -16,6 +16,7 @@ import {
 } from "@radix-ui/react-icons";
 import NextLink from "next/link";
 import { useSession, signOut } from "next-auth/react";
+import { getFirstName } from "@/utils/string";
 
 function Navbar() {
   const { data: session } = useSession();
@@ -65,7 +66,7 @@ function Navbar() {
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
                       <Button variant="soft">
-                        {session?.user?.name}
+                        {getFirstName(session?.user?.name ?? "")}
                         <CaretDownIcon />
                       </Button>
                     </DropdownMenu.Trigger>
