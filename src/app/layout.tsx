@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Theme } from "@radix-ui/themes";
+import { Toaster } from "sonner";
 import Navbar from "@/components/Navbar";
 import ContextProvider from "@/context/GlobalContext";
 import "./globals.css";
@@ -36,6 +37,7 @@ export default function RootLayout({
           <Theme appearance="dark">
             <Navbar />
             {children}
+            <Toaster />
           </Theme>
         </ContextProvider>
       </body>
