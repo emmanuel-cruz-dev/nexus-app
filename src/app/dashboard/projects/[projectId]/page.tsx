@@ -18,7 +18,7 @@ import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
 import { Project } from "../../../../../generated/prisma";
-// import { toast } from "sonner";
+import { toast } from "sonner";
 
 function ProjectDetailPage() {
   const router = useRouter();
@@ -44,7 +44,7 @@ function ProjectDetailPage() {
         setProjectData(data);
       } catch (error) {
         console.error(error);
-        // toast.error("Error loading project");
+        toast.error("Error loading project");
         router.push("/dashboard");
       } finally {
         setIsLoading(false);
@@ -58,12 +58,12 @@ function ProjectDetailPage() {
     try {
       const res = await axios.put(`/api/projects/${params.projectId}`, data);
       if (res.status === 200) {
-        // toast.success("Project updated");
+        toast.success("Project updated");
         router.refresh();
       }
     } catch (error) {
       console.error(error);
-      // toast.error("Error updating project");
+      toast.error("Error updating project");
     } finally {
       setIsSaving(false);
     }
@@ -73,13 +73,13 @@ function ProjectDetailPage() {
     try {
       const res = await axios.delete(`/api/projects/${params.projectId}`);
       if (res.status === 200) {
-        // toast.success("Project deleted");
+        toast.success("Project deleted");
         router.push("/dashboard");
         router.refresh();
       }
     } catch {
       console.error("Error deleting project");
-      // toast.error("Error deleting project");
+      toast.error("Error deleting project");
     }
   };
 
@@ -197,39 +197,3 @@ function ProjectDetailPage() {
 }
 
 export default ProjectDetailPage;
-
-// "use client";
-// import { Text, TextArea, Container } from "@radix-ui/themes";
-// import { useParams } from "next/navigation";
-// import axios from "axios";
-// import { useEffect, useState } from "react";
-
-// function ProjectDetailsPage() {
-//   const { projectId } = useParams();
-
-//   const [project, setProject] = useState(null);
-
-//   useEffect(() => {
-//     axios.get(`/api/projects/${projectId}`).then((res) => {
-//       setProject(res.data);
-//     });
-//   }, [projectId]);
-
-//   if (!project) {
-//     return <Container>Loading...</Container>;
-//   }
-
-//   return (
-//     <Container size="1" height="100%" className="p-3 md:p-0">
-//       <Text>Detalles del proyecto</Text>
-//       {project && (
-//         <>
-//           <Text>{project.title}</Text>
-//           <Text>{project.description}</Text>
-//         </>
-//       )}
-//     </Container>
-//   );
-// }
-
-// export default ProjectDetailsPage;
