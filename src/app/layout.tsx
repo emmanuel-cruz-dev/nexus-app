@@ -4,6 +4,7 @@ import { Theme } from "@radix-ui/themes";
 import { Toaster } from "sonner";
 import Navbar from "@/components/Navbar";
 import ContextProvider from "@/context/GlobalContext";
+import { ProgressBar } from "@/components/ui/ProgressBar";
 import "./globals.css";
 import "@radix-ui/themes/styles.css";
 
@@ -35,6 +36,7 @@ export default function RootLayout({
       >
         <ContextProvider>
           <Theme appearance="dark">
+            <ProgressBar />
             <Navbar />
             {children}
             <Toaster />
