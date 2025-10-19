@@ -1,6 +1,8 @@
 {
-  "name": "next-auth-radix",
+  "name": "nexus-app",
   "version": "0.1.0",
+  "description": "Aplicación fullstack desarrollada con Next.js que permite crear, editar y organizar notas, tareas y listas personales con autenticación de usuarios y una interfaz moderna.",
+  "author": "Emmanuel Cruz",
   "private": true,
   "scripts": {
     "dev": "next dev",
